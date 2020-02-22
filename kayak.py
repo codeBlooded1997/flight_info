@@ -5,7 +5,6 @@ from random import randint
 from time import sleep
 
 
-
 path_to_chromedriver = '/Users/arian/WorkSpace/dev/scraper/drivers/chromedriver'
 driver = webdriver.Chrome(executable_path=path_to_chromedriver)
 sleep(randint(8, 10))
@@ -39,15 +38,20 @@ def start_kayak(city_from, city_to, date_start, date_end):
     sleep(randint(8, 10))
     ## CLOSING POPUP
     try:
-        xp_popup_close = '//button[contains(@id,"dialog-close") and contains(@class, "Button-No-Standard-Style close ")]'
-        driver.find_elements_by_xpath(xp_popup_close)[5].click()
+        sleep(30)
+        xp_popupwindow = '//div[contains(@id, "dialog-content") and contains(@class,"content ")]'
+        xp_close = '//button[contains(@id, "dialog-close") and contains(@class, "Button-No-Standard-Style close ")]'
+        # window = driver.find_element_by_xpath(xp_popupwindow)
+        items = driver.find_elements_by_xpath(xp_close)
+        items[7].click()
         print('ALG.1 : SUCCESS')
     except Exception as e:
         print("ALG.1 : FAIL")
         pass
 
     try:
-        xp_popup_close = '//button[contains(@id,"-dialog-close") and contains(@class, "Button-No-Standard-Style close ")]'
+        sleep(5)
+        xp_popup_close = '//button[contains(@id,"dialog-close") and contains(@class, "Button-No-Standard-Style close ")]'
         button = driver.find_element_by_xpath(xp_popup_close)
         driver.implicitly_wait(10)
         ActionChains(driver).move_to_element(button).click(button).perform()
@@ -59,7 +63,7 @@ def start_kayak(city_from, city_to, date_start, date_end):
     try:
         button = driver.find_element_by_name('alert')
         button.click()
-        sleep(2)
+        sleep(5)
         # Switch the control to the Alert window
         obj = driver.switch_to.alert
         # Dismiss the Alert using
@@ -69,8 +73,8 @@ def start_kayak(city_from, city_to, date_start, date_end):
         print('ALG.3 : FAIL')
         pass
     sleep(randint(60, 95))
-    # print('Loading more.......')
-    #    load_more()
+    print('Loading more.......')
+    load_more() 
 
     print('Starting first scrape.')
 
